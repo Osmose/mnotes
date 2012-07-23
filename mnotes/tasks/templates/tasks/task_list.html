@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+
+{% block site_css %}
+  {{ super() }}
+  <link rel="stylesheet" href="{{ COMPRESS_URL }}css/task_list.css" type="text/css" charset="utf-8">
+{% endblock %}
+
+{% block site_js %}
+  {{ super() }}
+  <script src="{{ COMPRESS_URL }}js/task_list.js"></script>
+{% endblock %}
+
+{% block content %}
+
+<div class="row">
+  <div class="span12">
+    <h1>Todo List</h1>
+
+
+    <p>User: <span data-bind="text: user_email"></span>
+      <a href="#" data-bind="click: login, visible: user_id() === null">{{ _('Log in with BrowserID') }}</a>
+      <a href="#" data-bind="click: logout, visible: user_id() !== null">{{ _('Logout') }}</a>
+    </p>
+
+    <form class="form-horizontal" data-bind="submit: addTask">
+      <fiedlset>
+        <div class="control-group">
+          <label class="control-label" for="task-title">Task:</label>
+          <div class="controls">
+            <div class="input-append">
+              <input type="text" id="task-title" class="span8" data-bind="value: task_title">
+              <button type="submit" class="btn btn-success"><i class="icon-pencil icon-white"></i>{{ _('Create') }}</button>
+            </div>
+          </div>
+        </div>
+      </fieldset>
+    </form>
+
+    <table class="table table-striped table-bordered">
+      <thead>
+        <tr>
+          <th></th>
+          <th>Description</th>
+          <th>Delete?</th>
+        </tr>
+      </thead>
+      <tbody data-bind="foreach: tasks">
+        <tr>
+          <td><input type="checkbox" data-bind="checked: is_done"></td>
+          <td><input type="text" data-bind="value: title"></td>
+          <td><a class="btn btn-danger" href="#" data-bind="click: $parent.removeTask"><i class="icon-trash icon-white"></i> {{ _('Delete') }}</a></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <form data-bind="submit: sync">
+      <input type="hidden" name="tasks" data-bind="value: ko.toJSON(_tasks)">
+      <button type="submit" class="btn btn-warning" data-bind="disabled: is_syncing">
+        <i class="icon-upload icon-white"></i>
+        <span data-bind="text: is_syncing() ? 'Syncing' : 'Sync', disabled: is_syncing">{{ _('Sync') }}</span>
+      </button>
+    </form>
+
+    <p data-bind="visible: user_id() !== null">{{ _('Bookmarklet: ') }}
+      <a class="btn btn-info" data-bind="attr: {href: bookmarklet_code}"><i class="icon-bookmark icon-white"></i>{{ _('Create Task') }}</a>
+    </p>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+    {% compress css %}
+      {% block site_css %}
+        <link rel="stylesheet" href="{{ COMPRESS_URL }}css/bootstrap.css" type="text/css" charset="utf-8">
+        <link rel="stylesheet" href="{{ COMPRESS_URL }}css/base.css" type="text/css" charset="utf-8">
+      {% endblock %}
+    {% endcompress %}
+  </head>
+  <body>
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="brand" href="#">MNotes</a>
+        </div>
+      </div>
+    </div>
+
+    <div id="main" class="container">
+      {% block content %}{% endblock %}
+    </div>
+    <script src="https://login.persona.org/include.js"></script>
+    {% compress js %}
+      {% block site_js %}
+        <script src="{{ COMPRESS_URL }}js/libs/jquery.js"></script>
+        <script src="{{ COMPRESS_URL }}js/libs/knockout.js"></script>
+      {% endblock %}
+    {% endcompress %}
+  </body>
+</html>
